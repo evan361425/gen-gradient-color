@@ -18,4 +18,4 @@ var middleGray = generator.gen(8, 16)
 
 or
 
-`git clone 'evan361425/genGradientColor'`
+`git clone 'https://github.com/evan361425/genGradientColor.git'`
