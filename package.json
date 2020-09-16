@@ -1,0 +1,31 @@
+{
+  "name": "gen-gradient-color",
+  "version": "1.0.0",
+  "description": "generate gradient color",
+  "scripts": {
+    "prod": "webpack --mode production",
+    "dev": "webpack --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evan361425/genGradientColor.git"
+  },
+  "keywords": [
+    "color",
+    "generate"
+  ],
+  "author": "evanlu361425@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evan361425/genGradientColor/issues"
+  },
+  "homepage": "https://github.com/evan361425/genGradientColor#readme",
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "babel-loader": "^8.1.0",
+    "install": "^0.13.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  }
+}
