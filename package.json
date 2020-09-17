@@ -14,8 +14,8 @@
     "color",
     "generate"
   ],
-  "author": "evanlu361425@gmail.com",
-  "license": "ISC",
+  "author": "Evan Lu <wu0dj2k7ao3@gmail.com>",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/evan361425/genGradientColor/issues"
   },
