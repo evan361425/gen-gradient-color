@@ -19,3 +19,9 @@ var middleGray = generator.gen(8, 16)
 or
 
 `git clone 'https://github.com/evan361425/genGradientColor.git'`
+
+# test
+
+`node app.js`
+
+Now go to [http://127.0.0.1:3000/](http://127.0.0.1:3000/) you can see the example.

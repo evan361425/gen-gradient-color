@@ -1,11 +1,11 @@
 /**
- * Use algorithm from stackoverflow to 
+ * Use algorithm from stackoverflow to
  * generate gradient color from color1 to color2 in n steps
  * https://stackoverflow.com/questions/22607043/color-gradient-algorithm/39924008#39924008
  * @author Evan Lu <evanlu361425@gmail.com>
  * @version 1.0.0
  */
- 
+
 /**
  * ------------------------------------------------------------------------
  * Constants
@@ -97,7 +97,7 @@ function rgb2hex(rgb) {
  */
 function rgb2linear(rgb) {
 	return rgb.map(x =>
-		x <= C1 
+		x <= C1
 			? x / L2 / 255.
 			: Math.pow((x / 255. + L1) / (1 + L1), RATIO)
 	)
@@ -113,7 +113,7 @@ function linear2rgb(linear) {
 	return linear.map(x =>
 		Math.round(255.9999 * (
 			x <= C2
-				? L2 * x 
+				? L2 * x
 				: (1 + L1) * Math.pow(x, 1 / RATIO) - L1
 		))
 	)
@@ -146,6 +146,7 @@ class genGradientColor {
 	 * @return {array}
 	 */
 	gens(steps) {
+    steps = +steps
 		this.steps = steps
 		return [...Array(steps).keys()].map(i => this.gen(i));
 	}
@@ -205,4 +206,5 @@ class genGradientColor {
 	}
 }
 
+window.genGradientColor = genGradientColor;
 export default genGradientColor
