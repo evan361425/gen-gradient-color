@@ -207,4 +207,4 @@ class genGradientColor {
 }
 
 window.genGradientColor = genGradientColor;
-export default genGradientColor
+module.exports = genGradientColor
