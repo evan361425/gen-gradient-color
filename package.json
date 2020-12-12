@@ -1,6 +1,6 @@
 {
   "name": "gen-gradient-color",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "generate gradient color",
   "scripts": {
     "lint": "eslint src/**/*.js test/**/*.js",
