@@ -2,30 +2,27 @@ const path = require('path');
 
 const config = {
   entry: './src/index.js',
+  target: 'web',
   output: {
-    filename: 'index',
     path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
   },
   module: {
     rules: [
       {
-        test: /\.(js)$/,
-        exclude: /(node_modules)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env']
-          }
-        }
-      }
-    ]
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+      },
+    ],
   },
 };
 
-module.exports = (env, options) => {
-	if (options.mode === 'production') {
-		config.output.filename += '.min'
-	}
-	config.output.filename += '.js'
-	return config;
-}
+module.exports = (env, argv) => {
+  if (argv.mode === 'production') {
+    config.output.filename = 'bundle.min.js';
+    config.devtool = 'source-map';
+  }
+
+  return config;
+};
