@@ -34,5 +34,5 @@ var generator = new GenGradientColor('#ff0000', '#00ff00');
 ## Unit Test
 
 ```shell
-$npm run test
+$ npm run test
 ```
