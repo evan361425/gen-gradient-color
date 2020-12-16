@@ -27,7 +27,7 @@ var middleGray = generator.gen(8, 16)
 ```html
 <script src="/dist/bundle.min.js"></script>
 <script>
-var generator = new GenGradientColor('#f00', '#0f0');
+var generator = new GenGradientColor('#ff0000', '#00ff00');
 </script>
 ```
 
