@@ -9,7 +9,7 @@ $npm install gen-gradient-color
 
 ## Usage
 
-### Node JS
+### Node.js
 
 ```js
 // color1 is black and color2 is white
