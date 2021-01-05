@@ -1,3 +1,11 @@
+/*
+ * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
+ * This devtool is not neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -7,22 +15,7 @@
   \*************************/
 /***/ ((module) => {
 
-var GAMMA = 0.43;
-var L1 = 0.055;
-var L2 = 12.92;
-var C1 = 10.31475;
-var C2 = 0.0031308;
-var RATIO = 2.4;
-var rGAMMA = 1 / GAMMA;
-module.exports = {
-  GAMMA: GAMMA,
-  L1: L1,
-  L2: L2,
-  C1: C1,
-  C2: C2,
-  RATIO: RATIO,
-  rGAMMA: rGAMMA
-};
+eval("var GAMMA = 0.43;\nvar L1 = 0.055;\nvar L2 = 12.92;\nvar C1 = 10.31475;\nvar C2 = 0.0031308;\nvar RATIO = 2.4;\nvar rGAMMA = 1 / GAMMA;\nmodule.exports = {\n  GAMMA: GAMMA,\n  L1: L1,\n  L2: L2,\n  C1: C1,\n  C2: C2,\n  RATIO: RATIO,\n  rGAMMA: rGAMMA\n};\n\n//# sourceURL=webpack://gen-gradient-color/./src/constant.js?");
 
 /***/ }),
 
@@ -32,145 +25,7 @@ module.exports = {
   \***********************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var util = __webpack_require__(/*! ./util */ "./src/util.js");
-
-var CONST = __webpack_require__(/*! ./constant */ "./src/constant.js");
-/**
- * ------------------------------------------------------------------------
- * Class Definition
- * ------------------------------------------------------------------------
- */
-
-
-var GenGradientColor = /*#__PURE__*/function () {
-  /**
-   * @constructor
-   * @param {(string|number[])} color1 - String represent color code, Array represent RGB data
-   * @param {(string|number[])} color2
-   * @param {number} steps - Number of steps, it can set dynamically
-   */
-  function GenGradientColor() {
-    var color1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'e74c3c';
-    var color2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '3498eb';
-    var steps = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-
-    _classCallCheck(this, GenGradientColor);
-
-    this.steps = steps;
-    this.setColors(color1, color2);
-  } // Public
-
-  /**
-   * Generate all colors in gradient
-   * You must set color1 and color2 first
-   * @param {number} steps
-   * @return {array}
-   */
-
-
-  _createClass(GenGradientColor, [{
-    key: "gens",
-    value: function gens(steps) {
-      var _this = this;
-
-      steps = +steps;
-      this.steps = steps - 1;
-      return _toConsumableArray(Array(steps).keys()).map(function (i) {
-        return _this.gen(i);
-      });
-    }
-    /**
-     * Generate color in gradient
-     * @param {number} step 0-index
-     * @param {number} steps
-     * @return {string} hex - Hex code
-     */
-
-  }, {
-    key: "gen",
-    value: function gen(step, steps) {
-      var _this2 = this;
-
-      if (steps !== undefined) {
-        this.steps = steps;
-      }
-
-      if (!this.steps || !step) {
-        return util.rgb2hex(this.C1);
-      }
-
-      step /= this.steps;
-      var colors = this.L1.map(function (l1, i) {
-        return util.lerp(l1, _this2.L2["".concat(i)], step);
-      });
-      var sum = colors.reduce(function (total, color) {
-        return total + color;
-      }, 0);
-
-      if (sum != 0) {
-        var intensity = Math.pow(util.lerp(this.B1, this.B2, step), CONST.rGAMMA) / sum;
-        colors = colors.map(function (color) {
-          return color * intensity;
-        });
-      }
-
-      return util.rgb2hex(util.linear2rgb(colors));
-    } // Setter
-
-    /**
-     * set steps
-     * @param {number} steps
-     */
-
-  }, {
-    key: "setSteps",
-    value: function setSteps(steps) {
-      this.steps = steps;
-    }
-    /**
-     * set color, linear value, bright value
-     * @param {string|array} color1
-     * @param {string|array} color2
-     */
-
-  }, {
-    key: "setColors",
-    value: function setColors(color1, color2) {
-      this.C1 = util.color2rgb(color1);
-      this.C2 = util.color2rgb(color2);
-      this.L1 = util.rgb2linear(this.C1);
-      this.L2 = util.rgb2linear(this.C2);
-      this.B1 = Math.pow(this.L1.reduce(function (carry, v) {
-        return carry + v;
-      }, 0), CONST.GAMMA);
-      this.B2 = Math.pow(this.L2.reduce(function (carry, v) {
-        return carry + v;
-      }, 0), CONST.GAMMA);
-    }
-  }]);
-
-  return GenGradientColor;
-}();
-
-module.exports = GenGradientColor;
+eval("function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }\n\nfunction _nonIterableSpread() { throw new TypeError(\"Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _iterableToArray(iter) { if (typeof Symbol !== \"undefined\" && Symbol.iterator in Object(iter)) return Array.from(iter); }\n\nfunction _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nvar util = __webpack_require__(/*! ./util */ \"./src/util.js\");\n\nvar CONST = __webpack_require__(/*! ./constant */ \"./src/constant.js\");\n/**\n * ------------------------------------------------------------------------\n * Class Definition\n * ------------------------------------------------------------------------\n */\n\n\nvar GenGradientColor = /*#__PURE__*/function () {\n  /**\n   * @constructor\n   * @param {(string|number[])} color1 - String represent color code, Array represent RGB data\n   * @param {(string|number[])} color2\n   * @param {number} steps - Number of steps, it can set dynamically\n   */\n  function GenGradientColor() {\n    var color1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;\n    var color2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;\n    var steps = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;\n\n    _classCallCheck(this, GenGradientColor);\n\n    this.steps = steps;\n\n    if (color1 && color2) {\n      this.setColors(color1, color2);\n    }\n  } // Public\n\n  /**\n   * Generate all colors in gradient\n   * You must set color1 and color2 first\n   * @param {number} steps\n   * @return {array}\n   */\n\n\n  _createClass(GenGradientColor, [{\n    key: \"gens\",\n    value: function gens(steps) {\n      var _this = this;\n\n      steps = +steps;\n      this.steps = steps - 1;\n      return _toConsumableArray(Array(steps).keys()).map(function (i) {\n        return _this.gen(i);\n      });\n    }\n    /**\n     * Generate color in gradient\n     * @param {number} step 0-index\n     * @param {number} steps\n     * @return {string} hex - Hex code\n     */\n\n  }, {\n    key: \"gen\",\n    value: function gen(step, steps) {\n      var _this2 = this;\n\n      if (steps !== undefined) {\n        this.steps = steps;\n      }\n\n      if (!this.steps || !step) {\n        return util.rgb2hex(this.color1);\n      }\n\n      step /= this.steps;\n      var colors = this.linear1.map(function (l1, i) {\n        return util.lerp(l1, _this2.linear2[i], step);\n      });\n      var sum = colors.reduce(function (total, color) {\n        return total + color;\n      }, 0);\n\n      if (sum != 0) {\n        var intensity = Math.pow(util.lerp(this.bias1, this.bias2, step), CONST.rGAMMA) / sum;\n        colors = colors.map(function (color) {\n          return color * intensity;\n        });\n      }\n\n      return util.rgb2hex(util.linear2rgb(colors));\n    } // Setter\n\n    /**\n     * set steps\n     * @param {number} steps\n     */\n\n  }, {\n    key: \"setSteps\",\n    value: function setSteps(steps) {\n      this.steps = steps;\n    }\n    /**\n     * set color, linear value, bright value\n     * @param {string|array} color1\n     * @param {string|array} color2\n     */\n\n  }, {\n    key: \"setColors\",\n    value: function setColors(color1, color2) {\n      this.color1 = util.color2rgb(color1);\n      this.color2 = util.color2rgb(color2);\n      this.linear1 = util.rgb2linear(this.color1);\n      this.linear2 = util.rgb2linear(this.color2);\n      this.bias1 = Math.pow(this.linear1.reduce(function (carry, v) {\n        return carry + v;\n      }, 0), CONST.GAMMA);\n      this.bias2 = Math.pow(this.linear2.reduce(function (carry, v) {\n        return carry + v;\n      }, 0), CONST.GAMMA);\n    }\n  }]);\n\n  return GenGradientColor;\n}();\n\nmodule.exports = GenGradientColor;\n\n//# sourceURL=webpack://gen-gradient-color/./src/gen-gradient-color.js?");
 
 /***/ }),
 
@@ -180,25 +35,7 @@ module.exports = GenGradientColor;
   \**********************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-/**
- * Use algorithm from stackoverflow to
- * generate gradient color from color1 to color2 in n steps
- * https://stackoverflow.com/questions/22607043/color-gradient-algorithm/39924008#39924008
- * @author Evan Lu <evanlu361425@gmail.com>
- * @version 1.0.0
- */
-var GenGradientColor = __webpack_require__(/*! ./gen-gradient-color */ "./src/gen-gradient-color.js");
-
-var util = __webpack_require__(/*! ./util */ "./src/util.js");
-
-if (window) {
-  window.GenGradientColor = GenGradientColor;
-}
-
-module.exports = {
-  GenGradientColor: GenGradientColor,
-  util: util
-};
+eval("/**\n * Use algorithm from stackoverflow to\n * generate gradient color from color1 to color2 in n steps\n * https://stackoverflow.com/questions/22607043/color-gradient-algorithm/39924008#39924008\n * @author Evan Lu <evanlu361425@gmail.com>\n * @version 1.0.0\n */\nvar GenGradientColor = __webpack_require__(/*! ./gen-gradient-color */ \"./src/gen-gradient-color.js\");\n\nvar util = __webpack_require__(/*! ./util */ \"./src/util.js\");\n\nif (typeof window !== 'undefined') {\n  window.GenGradientColor = GenGradientColor;\n}\n\nmodule.exports = {\n  GenGradientColor: GenGradientColor,\n  util: util\n};\n\n//# sourceURL=webpack://gen-gradient-color/./src/index.js?");
 
 /***/ }),
 
@@ -208,112 +45,7 @@ module.exports = {
   \*********************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var CONST = __webpack_require__(/*! ./constant */ "./src/constant.js");
-/**
- * Wheather input is string
- * @param {mixed} value
- * @return {boolean}
- */
-
-
-function isString(value) {
-  return typeof value === 'string' || value instanceof String;
-}
-/**
- * String hex code to RGB number array
- * @param {string} hex - Hex code
- * @return {number[]} - Array of RGB
- */
-
-
-function hex2rgb(hex) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-
-  if (!result) {
-    throw new TypeError('Hex code is invalid please follow #?????? which ? is an hex number');
-  }
-
-  return [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)];
-}
-/**
- * Return array of rgb
- * @param {string|array} color
- * @return {array}
- */
-
-
-function color2rgb(color) {
-  if (isString(color)) {
-    return hex2rgb(color);
-  } else if (Array.isArray(color)) {
-    return color.map(function (el) {
-      return +el;
-    });
-  }
-
-  throw new TypeError('Color must be string or array');
-}
-/**
- * Get the Linear intERPolation between two value
- * @param {number} x - First var
- * @param {number} y - Second var
- * @param {number} p - Probability
- * @return {number}
- */
-
-
-function lerp(x, y, p) {
-  return x * (1 - p) + y * p;
-}
-/**
- * String hex code to RGB number array
- * @param {number[]} rgb
- * @return {string} - Hex code
- */
-
-
-function rgb2hex(rgb) {
-  return '#' + rgb.map(function (c) {
-    c = Math.min(255, Math.abs(c)).toString(16);
-    return c.length == 1 ? '0' + c : c;
-  }).join('');
-}
-/**
- * Returns a linear value in the range [0,1]
- * for sRGB input in [0,255].
- * @param {number[]} rgb
- * @return {number[]}
- */
-
-
-function rgb2linear(rgb) {
-  return rgb.map(function (x) {
-    return x <= CONST.C1 ? x / CONST.L2 / 255. : Math.pow((x / 255. + CONST.L1) / (1 + CONST.L1), CONST.RATIO);
-  });
-}
-/**
- * Returns a sRGB value in the range [0,255]
- * for linear input in [0,1]
- * @param {number[]} linear
- * @return {number[]}
- */
-
-
-function linear2rgb(linear) {
-  return linear.map(function (x) {
-    return Math.round(255.9999 * (x <= CONST.C2 ? CONST.L2 * x : (1 + CONST.L1) * Math.pow(x, 1 / CONST.RATIO) - CONST.L1));
-  });
-}
-
-module.exports = {
-  isString: isString,
-  hex2rgb: hex2rgb,
-  color2rgb: color2rgb,
-  lerp: lerp,
-  rgb2hex: rgb2hex,
-  rgb2linear: rgb2linear,
-  linear2rgb: linear2rgb
-};
+eval("var CONST = __webpack_require__(/*! ./constant */ \"./src/constant.js\");\n/**\n * Check is input a string\n * @param {mixed} value\n * @return {boolean}\n */\n\n\nfunction isString(value) {\n  return typeof value === 'string' || value instanceof String;\n}\n/**\n * String hex code to RGB number array\n * @param {string} hex - Hex code\n * @return {number[]} - Array of RGB\n */\n\n\nfunction hex2rgb(hex) {\n  var rgb = hex.match(hex.length > 4 ? /^#?([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i : /^#?([a-f\\d]{1})([a-f\\d]{1})([a-f\\d]{1})$/i);\n\n  if (!rgb) {\n    throw new TypeError('Hex code is invalid which should be 3/6 digits');\n  }\n\n  var rgbArray = hex.length > 4 ? [rgb[1], rgb[2], rgb[3]] : [rgb[1].repeat(2), rgb[2].repeat(2), rgb[3].repeat(2)];\n  return rgbArray.map(function (color) {\n    return parseInt(color, 16);\n  });\n}\n/**\n * Return array of rgb\n * @param {string|array} color\n * @return {array}\n */\n\n\nfunction color2rgb(color) {\n  if (isString(color)) {\n    return hex2rgb(color);\n  } else if (Array.isArray(color)) {\n    return color.map(sanitizeColor);\n  }\n\n  throw new TypeError('Color must be string or array');\n}\n/**\n * Get the Linear intERPolation between two value\n * @param {number} x - First var\n * @param {number} y - Second var\n * @param {number} p - Probability\n * @return {number}\n */\n\n\nfunction lerp(x, y, p) {\n  return x * (1 - p) + y * p;\n}\n/**\n * String hex code to RGB number array\n * @param {number[]|string} rgb\n * @return {string} - Hex code\n */\n\n\nfunction rgb2hex(rgb) {\n  if (isString(rgb)) {\n    rgb = color2rgb(rgb);\n  } else if (!Array.isArray(rgb)) {\n    throw new TypeError('RGB must be array or string');\n  }\n\n  return '#' + rgb.map(sanitizeColor).map(function (color) {\n    return color.toString(16).padStart(2, '0');\n  }).join('');\n}\n/**\n * Returns a linear value in the range [0,1]\n * for sRGB input in [0,255].\n * @param {number[]|string} rgb\n * @return {number[]}\n */\n\n\nfunction rgb2linear(rgb) {\n  if (isString(rgb)) {\n    rgb = color2rgb(rgb);\n  } else if (!Array.isArray(rgb)) {\n    throw new TypeError('RGB must be array or string');\n  }\n\n  return rgb.map(function (x) {\n    return x <= CONST.C1 ? x / CONST.L2 / 255.0 : Math.pow((x / 255.0 + CONST.L1) / (1 + CONST.L1), CONST.RATIO);\n  });\n}\n/**\n * Returns a sRGB value in the range [0,255]\n * for linear input in [0,1]\n * @param {number[]} linear\n * @return {number[]}\n */\n\n\nfunction linear2rgb(linear) {\n  return linear.map(function (x) {\n    return Math.round(255.9999 * (x <= CONST.C2 ? CONST.L2 * x : (1 + CONST.L1) * Math.pow(x, 1 / CONST.RATIO) - CONST.L1));\n  });\n}\n/**\n * Sanitize color to 0-255\n * @param  {mixed} color\n * @return {number}\n */\n\n\nfunction sanitizeColor(color) {\n  var result = Math.min(255, Math.abs(+color));\n  return isNaN(result) ? 0 : result;\n}\n\nmodule.exports = {\n  isString: isString,\n  hex2rgb: hex2rgb,\n  color2rgb: color2rgb,\n  lerp: lerp,\n  rgb2hex: rgb2hex,\n  rgb2linear: rgb2linear,\n  linear2rgb: linear2rgb\n};\n\n//# sourceURL=webpack://gen-gradient-color/./src/util.js?");
 
 /***/ })
 
@@ -349,4 +81,3 @@ module.exports = {
 /******/ 	__webpack_require__("./src/index.js");
 /******/ })()
 ;
-//# sourceMappingURL=bundle.js.map

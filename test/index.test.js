@@ -2,7 +2,7 @@ const { GenGradientColor } = require('../src/index');
 
 describe('Generate Gradient Color', () => {
   it('should get 16 colors from black to white', () => {
-    const generator = new GenGradientColor('#000000', [255, 255, 255]);
+    const generator = new GenGradientColor('#000000', [255, '255', 255]);
     const colors = generator.gens(16);
 
     expect(colors).toEqual([
@@ -23,5 +23,13 @@ describe('Generate Gradient Color', () => {
       '#efefef',
       '#ffffff',
     ]);
+
+    generator.setColors('abc', '000def');
+
+    expect(generator.gen(8, 16)).toBe('#7b88dd');
+
+    generator.setColors('#f00', ['non number will consider as 0', 300, 0]);
+
+    expect(generator.gens(3)).toEqual(['#ff0000', '#bcbc00', '#00ff00']);
   });
 });

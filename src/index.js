@@ -9,7 +9,7 @@
 const GenGradientColor = require('./gen-gradient-color');
 const util = require('./util');
 
-if (window) {
+if (typeof window !== 'undefined') {
   window.GenGradientColor = GenGradientColor;
 }
 

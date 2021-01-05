@@ -4,8 +4,7 @@
   },
   "extends": [
     "google",
-    "plugin:jasmine/recommended",
-    "plugin:security/recommended"
+    "plugin:jasmine/recommended"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -16,8 +15,7 @@
     "sourceType": "module"
   },
   "plugins": [
-    "jasmine",
-    "security"
+    "jasmine"
   ],
   "rules": {
     "indent": ["error", 2],

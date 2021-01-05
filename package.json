@@ -1,29 +1,30 @@
 {
   "name": "gen-gradient-color",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "generate gradient color",
-  "scripts": {
-    "lint": "eslint src/**/*.js test/**/*.js",
-    "test": "jasmine --config=jasmine.json",
-    "build": "npm run dev && npm run prod",
-    "dev": "webpack --mode development",
-    "prod": "webpack --mode production"
+  "keywords": [
+    "color",
+    "gradient color",
+    "generate color"
+  ],
+  "homepage": "https://github.com/evan361425/gen-gradient-color#readme",
+  "bugs": {
+    "url": "https://github.com/evan361425/gen-gradient-color/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/evan361425/gen-gradient-color.git"
   },
-  "keywords": [
-    "color",
-    "generate"
-  ],
-  "main": "src/index.js",
-  "author": "Shueh Chou Lu <evanlu361425@gmail.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/evan361425/gen-gradient-color/issues"
+  "author": "Shueh Chou Lu <evanlu361425@gmail.com>",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "npm run dev && npm run prod",
+    "dev": "webpack --mode development",
+    "lint": "eslint src/**/*.js test/**/*.js && npx sort-package-json package.json",
+    "prod": "webpack --mode production",
+    "test": "jasmine --config=jasmine.json"
   },
-  "homepage": "https://github.com/evan361425/gen-gradient-color#readme",
   "devDependencies": {
     "@babel/core": "7.12.10",
     "@babel/preset-env": "7.12.10",
@@ -31,8 +32,8 @@
     "eslint": "7.15.0",
     "eslint-config-google": "0.14.0",
     "eslint-plugin-jasmine": "4.1.1",
-    "eslint-plugin-security": "1.4.0",
     "jasmine": "3.6.3",
+    "sort-package-json": "1.48.0",
     "webpack": "5.10.1",
     "webpack-cli": "4.2.0"
   }

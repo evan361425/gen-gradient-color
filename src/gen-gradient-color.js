@@ -13,9 +13,12 @@ class GenGradientColor {
    * @param {(string|number[])} color2
    * @param {number} steps - Number of steps, it can set dynamically
    */
-  constructor(color1 = 'e74c3c', color2 = '3498eb', steps = 0) {
+  constructor(color1 = null, color2 = null, steps = 0) {
     this.steps = steps;
-    this.setColors(color1, color2);
+
+    if (color1 && color2) {
+      this.setColors(color1, color2);
+    }
   }
 
   // Public
@@ -44,18 +47,16 @@ class GenGradientColor {
     }
 
     if (!this.steps || !step) {
-      return util.rgb2hex(this.C1);
+      return util.rgb2hex(this.color1);
     }
 
     step /= this.steps;
 
-    let colors = this.L1.map(
-      (l1, i) => util.lerp(l1, this.L2[`${i}`], step),
-    );
+    let colors = this.linear1.map((l1, i) => util.lerp(l1, this.linear2[i], step));
     const sum = colors.reduce((total, color) => total + color, 0);
 
     if (sum != 0) {
-      const intensity = Math.pow(util.lerp(this.B1, this.B2, step), CONST.rGAMMA) / sum;
+      const intensity = Math.pow(util.lerp(this.bias1, this.bias2, step), CONST.rGAMMA) / sum;
       colors = colors.map((color) => color * intensity);
     }
 
@@ -78,12 +79,12 @@ class GenGradientColor {
    * @param {string|array} color2
    */
   setColors(color1, color2) {
-    this.C1 = util.color2rgb(color1);
-    this.C2 = util.color2rgb(color2);
-    this.L1 = util.rgb2linear(this.C1);
-    this.L2 = util.rgb2linear(this.C2);
-    this.B1 = Math.pow(this.L1.reduce((carry, v) => carry + v, 0), CONST.GAMMA);
-    this.B2 = Math.pow(this.L2.reduce((carry, v) => carry + v, 0), CONST.GAMMA);
+    this.color1 = util.color2rgb(color1);
+    this.color2 = util.color2rgb(color2);
+    this.linear1 = util.rgb2linear(this.color1);
+    this.linear2 = util.rgb2linear(this.color2);
+    this.bias1 = Math.pow(this.linear1.reduce((carry, v) => carry + v, 0), CONST.GAMMA);
+    this.bias2 = Math.pow(this.linear2.reduce((carry, v) => carry + v, 0), CONST.GAMMA);
   }
 }
 

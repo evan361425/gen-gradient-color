@@ -1,7 +1,7 @@
 const CONST = require('./constant');
 
 /**
- * Wheather input is string
+ * Check is input a string
  * @param {mixed} value
  * @return {boolean}
  */
@@ -15,17 +15,18 @@ function isString(value) {
  * @return {number[]} - Array of RGB
  */
 function hex2rgb(hex) {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  const rgb = hex.match(hex.length > 4 ?
+    /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i :
+    /^#?([a-f\d]{1})([a-f\d]{1})([a-f\d]{1})$/i);
 
-  if (!result) {
-    throw new TypeError('Hex code is invalid please follow #?????? which ? is an hex number');
+  if (!rgb) {
+    throw new TypeError('Hex code is invalid which should be 3/6 digits');
   }
+  const rgbArray = hex.length > 4 ?
+    [rgb[1], rgb[2], rgb[3]] :
+    [rgb[1].repeat(2), rgb[2].repeat(2), rgb[3].repeat(2)];
 
-  return [
-    parseInt(result[1], 16),
-    parseInt(result[2], 16),
-    parseInt(result[3], 16),
-  ];
+  return rgbArray.map((color) => parseInt(color, 16));
 }
 
 /**
@@ -37,7 +38,7 @@ function color2rgb(color) {
   if (isString(color)) {
     return hex2rgb(color);
   } else if (Array.isArray(color)) {
-    return color.map((el) => +el);
+    return color.map(sanitizeColor);
   }
   throw new TypeError('Color must be string or array');
 }
@@ -55,27 +56,39 @@ function lerp(x, y, p) {
 
 /**
  * String hex code to RGB number array
- * @param {number[]} rgb
+ * @param {number[]|string} rgb
  * @return {string} - Hex code
  */
 function rgb2hex(rgb) {
-  return '#' + rgb.map((c) => {
-    c = Math.min(255, Math.abs(c)).toString(16);
-    return c.length == 1 ? '0' + c : c;
-  }).join('');
+  if (isString(rgb)) {
+    rgb = color2rgb(rgb);
+  } else if (!Array.isArray(rgb)) {
+    throw new TypeError('RGB must be array or string');
+  }
+
+  return '#' + rgb
+    .map(sanitizeColor)
+    .map((color) => color.toString(16).padStart(2, '0'))
+    .join('');
 }
 
 /**
  * Returns a linear value in the range [0,1]
  * for sRGB input in [0,255].
- * @param {number[]} rgb
+ * @param {number[]|string} rgb
  * @return {number[]}
  */
 function rgb2linear(rgb) {
+  if (isString(rgb)) {
+    rgb = color2rgb(rgb);
+  } else if (!Array.isArray(rgb)) {
+    throw new TypeError('RGB must be array or string');
+  }
+
   return rgb.map((x) =>
     x <= CONST.C1 ?
-      x / CONST.L2 / 255. :
-      Math.pow((x / 255. + CONST.L1) / (1 + CONST.L1), CONST.RATIO),
+      x / CONST.L2 / 255.0 :
+      Math.pow((x / 255.0 + CONST.L1) / (1 + CONST.L1), CONST.RATIO),
   );
 }
 
@@ -93,6 +106,16 @@ function linear2rgb(linear) {
         (1 + CONST.L1) * Math.pow(x, 1 / CONST.RATIO) - CONST.L1
     )),
   );
+}
+
+/**
+ * Sanitize color to 0-255
+ * @param  {mixed} color
+ * @return {number}
+ */
+function sanitizeColor(color) {
+  const result = Math.min(255, Math.abs(+color));
+  return isNaN(result) ? 0 : result;
 }
 
 module.exports = {
