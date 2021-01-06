@@ -30,9 +30,8 @@ class GenGradientColor {
    * @return {array}
    */
   gens(steps) {
-    steps = +steps;
-    this.steps = steps - 1;
-    return [...Array(steps).keys()].map((i) => this.gen(i));
+    this.steps = +steps - 1;
+    return [...Array(steps).keys()].map((step) => this.gen(step));
   }
 
   /**

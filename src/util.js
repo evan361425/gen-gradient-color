@@ -22,6 +22,7 @@ function hex2rgb(hex) {
   if (!rgb) {
     throw new TypeError('Hex code is invalid which should be 3/6 digits');
   }
+
   const rgbArray = hex.length > 4 ?
     [rgb[1], rgb[2], rgb[3]] :
     [rgb[1].repeat(2), rgb[2].repeat(2), rgb[3].repeat(2)];
@@ -39,8 +40,9 @@ function color2rgb(color) {
     return hex2rgb(color);
   } else if (Array.isArray(color)) {
     return color.map(sanitizeColor);
+  } else {
+    throw new TypeError('Color must be string or array');
   }
-  throw new TypeError('Color must be string or array');
 }
 
 /**
@@ -51,44 +53,34 @@ function color2rgb(color) {
  * @return {number}
  */
 function lerp(x, y, p) {
+  p = Math.max(0, Math.min(1, p));
   return x * (1 - p) + y * p;
 }
 
 /**
  * String hex code to RGB number array
- * @param {number[]|string} rgb
+ * @param {string|array} rgb
  * @return {string} - Hex code
  */
 function rgb2hex(rgb) {
-  if (isString(rgb)) {
-    rgb = color2rgb(rgb);
-  } else if (!Array.isArray(rgb)) {
-    throw new TypeError('RGB must be array or string');
-  }
-
-  return '#' + rgb
-    .map(sanitizeColor)
+  const hex = color2rgb(rgb)
     .map((color) => color.toString(16).padStart(2, '0'))
     .join('');
+
+  return `#${hex}`;
 }
 
 /**
  * Returns a linear value in the range [0,1]
  * for sRGB input in [0,255].
- * @param {number[]|string} rgb
+ * @param {string|array} rgb
  * @return {number[]}
  */
 function rgb2linear(rgb) {
-  if (isString(rgb)) {
-    rgb = color2rgb(rgb);
-  } else if (!Array.isArray(rgb)) {
-    throw new TypeError('RGB must be array or string');
-  }
-
-  return rgb.map((x) =>
-    x <= CONST.C1 ?
-      x / CONST.L2 / 255.0 :
-      Math.pow((x / 255.0 + CONST.L1) / (1 + CONST.L1), CONST.RATIO),
+  return color2rgb(rgb).map((color) =>
+    color <= CONST.C1 ?
+      color / CONST.L2 / 255.0 :
+      Math.pow((color / 255.0 + CONST.L1) / (1 + CONST.L1), CONST.RATIO),
   );
 }
 
@@ -99,11 +91,11 @@ function rgb2linear(rgb) {
  * @return {number[]}
  */
 function linear2rgb(linear) {
-  return linear.map((x) =>
+  return linear.map((color) =>
     Math.round(255.9999 * (
-      x <= CONST.C2 ?
-        CONST.L2 * x :
-        (1 + CONST.L1) * Math.pow(x, 1 / CONST.RATIO) - CONST.L1
+      color <= CONST.C2 ?
+        CONST.L2 * color :
+        (1 + CONST.L1) * Math.pow(color, 1 / CONST.RATIO) - CONST.L1
     )),
   );
 }
@@ -121,9 +113,9 @@ function sanitizeColor(color) {
 module.exports = {
   isString,
   hex2rgb,
-  color2rgb,
-  lerp,
   rgb2hex,
-  rgb2linear,
+  color2rgb,
   linear2rgb,
+  rgb2linear,
+  lerp,
 };

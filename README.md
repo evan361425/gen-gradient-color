@@ -3,9 +3,15 @@ generate gradient color by two colors
 
 ## Installation
 
+### NPM
+
 ```shell
 $npm install gen-gradient-color
 ```
+
+### Website
+
+download [dist/bundle.js](evan361425/gen-gradient-color/blob/master/dist/bundle.js) or [dist/bundle.min.js](evan361425/gen-gradient-color/blob/master/dist/bundle.min.js) and include it!
 
 ## Usage
 
@@ -38,14 +44,27 @@ var color = generator.gens(3);
 
 ### Util
 
+Web environment can use it by `GenGradientColor.util`
+
 ```js
 import { util } from 'gen-gradient-color';
+// or var util = GenGradientColor.util
+
 util.isString('abc'); // true
-util.hex2rgb('#000'); // [0, 0, 0], change string color to number array
-// below method if input is string use hex2rgb else sanitize array of number
-util.color2rgb([0, '123', 'invalid-number']); // [0, 123, 0]
+
+// change string to number array
+util.hex2rgb('#000'); // [0, 0, 0]
+// oposite: hex2rgb
 util.rgb2hex([0, 1, 2]); // #000102
+
+// if is string: hex2rgb
+// else if is array: sanitize element
+// else: error
+util.color2rgb([0, '123', 'invalid-number']); // [0, 123, 0]
+
 util.rgb2linear('001'); // oposite: util.linear2rgb
+// a * p + b * (1 - p)
+util.lerp(5, 6, 0.1); // a: 5, b: 6, p: 0.1
 ```
 
 ## Scripts
