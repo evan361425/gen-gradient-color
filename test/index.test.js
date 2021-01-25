@@ -26,7 +26,8 @@ describe('Generate Gradient Color', () => {
 
     generator.setColors('abc', '000def');
 
-    expect(generator.gen(8, 16)).toBe('#7b88dd');
+    expect(generator.gen(3, 16)).toBe('#9baad3');
+    expect(generator.gen(1, 2)).toBe('#7b88dd');
 
     generator.setColors('#f00', ['non number will consider as 0', 300, 0]);
 
